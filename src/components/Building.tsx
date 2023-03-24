@@ -3,7 +3,6 @@ import { Canvas, useLoader, Vector3 } from '@react-three/fiber'
 import { OrbitControls, Html } from '@react-three/drei'
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
 import { DoubleSide } from "three";
-import Dropzone from 'react-dropzone'
 
 const NUMBER_OF_APARTMENTS_PER_FLOOR = 9
 const NUMBER_OF_FLOORS = 9
@@ -46,13 +45,6 @@ const Building = () => {
     setFloors(updatedSelectionFloors);
   }
 
-  const handleOnDropzoneUpload = (acceptedFiles: any) => {
-    // console.log(acceptedFiles);
-    const updatedFloors = floors.map((f: Floor) => f.selected ? ({ ...f, files: [...acceptedFiles.map((af: any) => ({ name: af.name }))] }) : f);
-    // console.log(updatedFloors.filter(f=>f.files[0].hasOwnProperty('name')));
-    setFloors(updatedFloors);
-  }
-
   const handleRemoveAttachedFile = () => {
     alert('remove me')
   }
@@ -86,17 +78,6 @@ const Building = () => {
 
                 key={index}><div className='fileRowDetails'>{file.name}</div> <div className='removeSelectedButton' onClick={handleRemoveAttachedFile}>X</div> </div>))}
         </div>
-
-        <Dropzone onDrop={handleOnDropzoneUpload}>
-          {({ getRootProps, getInputProps }) => (
-            <section style={{ border: '1px dashed grey' }}>
-              <div {...getRootProps()}>
-                <input {...getInputProps()} />
-                <p>Drag 'n' drop some files here, or click to select files</p>
-              </div>
-            </section>
-          )}
-        </Dropzone>
       </div>
 
       <Canvas>
