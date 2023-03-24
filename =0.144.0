@@ -1,0 +1,15 @@
+Progress: resolved 0, reused 1, downloaded 0, added 0
+Progress: resolved 124, reused 110, downloaded 0, added 0
+Progress: resolved 143, reused 128, downloaded 0, added 0
+Progress: resolved 257, reused 242, downloaded 1, added 0
+Progress: resolved 257, reused 243, downloaded 1, added 0
+Progress: resolved 467, reused 453, downloaded 1, added 0
+Packages: +4 -2
+++++--
+
+dependencies:
++ @types/three 0.149.0
+
+The integrity of 1028 files was checked. This might have caused installation to take longer.
+Done in 6.2s
+Progress: resolved 478, reused 463, downloaded 2, added 4, done
