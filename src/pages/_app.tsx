@@ -18,7 +18,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <ClerkProvider {...pageProps} >
       <SessionProvider session={session}>
-        <SessionContextProvider supabaseClient={supabase} initialSession={session}>
+        <SessionContextProvider supabaseClient={supabase}>
           <PageLayout>
             <Component {...pageProps} />
           </PageLayout>
