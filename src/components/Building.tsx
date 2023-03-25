@@ -50,8 +50,7 @@ const Building = () => {
   }
 
   return (
-    <div className='appWrapper'>
-
+    <>
       <div className='controls'>
         <button onClick={handleClearSelectionOnClick}>clear selection</button>
 
@@ -102,7 +101,7 @@ const Building = () => {
         ))}
         <OrbitControls />
       </Canvas>
-    </div>
+    </>
   )
 }
 
