@@ -33,11 +33,13 @@ export const PageLayout = (props: PropsWithChildren) => {
             </Link>
             <ul className="space-y-2">
               <li>
-                <Link onClick={()=>{setIsOpen(false)}} href="/createBuilding" className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                <Link onClick={()=>{setIsOpen(false)}} href="/test2" className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                {/* <Link onClick={()=>{setIsOpen(false)}} href="/createBuilding" className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"> */}
                   <svg fill="none" className='flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white' stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"></path>
                   </svg>
-                  <span className="flex-1 ml-3 whitespace-nowrap">Buildings</span>
+                  <span className="flex-1 ml-3 whitespace-nowrap">test2</span>
+                  {/* <span className="flex-1 ml-3 whitespace-nowrap">Buildings</span> */}
                 </Link>
               </li>
               <li>
