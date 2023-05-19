@@ -1,6 +1,6 @@
 import { observer } from "mobx-react";
 import { useState } from "react";
-import { useStore } from "~/stores/stores";
+import { useStore } from "~/stores/building.store";
 // import { useForm } from "react-hook-form";
 
 const Table = observer(({ value, onChange }: any) => {
@@ -8,8 +8,7 @@ const Table = observer(({ value, onChange }: any) => {
   const { buildingStore } = useStore();
   const { setIsEditingBuilding } = buildingStore;
   const [formValues, setFormValues]: any = useState({
-    startFloor: 0,
-    endFloor: 1,
+    floorNumber: 0,
     apartments: 8,
     description: 'offices'
   });
@@ -101,7 +100,7 @@ const Table = observer(({ value, onChange }: any) => {
                 // <form>
                 <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                   <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    <input className="w-6 text-black" value={formValues['startFloor']} onChange={(e) => { handleFieldChange('startFloor', e.target.value) }} /> - <input className="w-6 text-black" onChange={(e) => { handleFieldChange('endFloor', e.target.value) }} value={formValues['endFloor']} />
+                    <input disabled className="w-6 text-black" value={formValues['floorNumber']} onChange={(e) => { handleFieldChange('floorNumber', e.target.value) }} />
                   </th>
                   <td className="px-6 py-4">
                     <input className="w-20 text-black" value={formValues['apartments']} onChange={(e) => { handleFieldChange('apartments', e.target.value) }} />
@@ -121,7 +120,7 @@ const Table = observer(({ value, onChange }: any) => {
 
                 <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                   <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {floorCluster.startFloor} - {floorCluster.endFloor}
+                    {index}
                   </th>
                   <td className="px-6 py-4">
                     {floorCluster.apartments}

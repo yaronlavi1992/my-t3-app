@@ -1,6 +1,6 @@
 import { Provider } from "mobx-react";
 import { createContext, ReactNode } from "react";
-import { BuildingStore } from "./stores";
+import { BuildingStore } from "./building.store";
 
 interface Stores {
   buildingStore: BuildingStore;
