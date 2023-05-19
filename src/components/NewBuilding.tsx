@@ -55,7 +55,7 @@ const NewBuilding = observer(({ onChange }: any) => {
     // console.log({...value});
     const updatedValue = value.map((floorCluster: any, index: number) => index === editedIndex ? formValues : floorCluster);
 
-    const normalizedValue: any = [];
+    const normalizedValue: any[] = [];
 
     updatedValue.forEach((floorCluster: any, index: number) => {
       if (floorCluster.startFloor + 1 !== floorCluster.endFloor) {

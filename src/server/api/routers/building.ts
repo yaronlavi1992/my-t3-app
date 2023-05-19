@@ -30,20 +30,21 @@ export const buildingRouter = createTRPCRouter({
       data: {
         ...input,
         userId: ctx.auth.userId
-      }
+      } as any
     })
     return building;
   }),
 
-  getUserBuildingsList: publicProcedure.query(({ctx}) => {
+  getUserBuildingsList: publicProcedure.query( async ({ctx}) => {
     if(!ctx.auth.userId) {
       return 'no such user';
     }
-    return ctx.prisma.building.findMany({
+    const buildings = await ctx.prisma.building.findMany({
       where: {
         userId: ctx.auth.userId
       }
-    })
+    });
+    return Object(buildings).values().length !== 0 ? buildings : [];
   }),
 
   getUserBuildingById: publicProcedure.input(
