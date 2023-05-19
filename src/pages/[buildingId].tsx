@@ -96,7 +96,6 @@ const Test2: NextPage = observer(() => {
           <Table value={floors} onChange={(rows: any) => { setFloors(rows) }} setIsEditingBuilding={setIsEditingBuilding} />}
       </StaticModal>
 
-      {/* {console.log(JSON.stringify(selectedApartments))} */}
       <StaticModal position={'bottom-20 left-80'}>
         {Object.keys?.(selectedApartments)?.map((floorIndex: string, index: number) => (
           <div key={index} className='flex gap-2 p-2'>
