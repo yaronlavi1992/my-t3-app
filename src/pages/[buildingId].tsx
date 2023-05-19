@@ -3,7 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { observer } from 'mobx-react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import * as THREE from 'three';
 import Ground from '~/components/Ground';
 import StaticModal from '~/components/StaticModal';
@@ -27,7 +27,7 @@ const Test2: NextPage = observer(() => {
   const router = useRouter();
   const { buildingId } = router.query;
   const buildingSections = api.building.getUserBuildingById.useQuery({
-    buildingId
+    buildingId: buildingId as string
   }, {
     enabled: !!buildingId
   }
@@ -63,7 +63,6 @@ const Test2: NextPage = observer(() => {
         {/* {normalizedSections.map?.((br: any, buildingRowIndex: number) => (
           <FloorCluster startFloor={br.startFloor} endFloor={br.endFloor} apartments={br.apartments} floorHeight={5} buildingRowIndex={buildingRowIndex} />
         ))} */}
-
         {floors.map((section: any, i: number) => {
           const floorHeight = 5;
           return (
@@ -142,16 +141,18 @@ const Test2: NextPage = observer(() => {
 const Floor = ({ apartments, index: floorIndex, floorHeight, ...rest }: any) => {
 
   return (
-    Array.from({ length: apartments.length }, (_, j) => (
-      <Apartment
-        key={j}
-        index={j}
-        apartments={apartments}
-        floorHeight={floorHeight}
-        floorIndex={floorIndex}
-        {...rest}
-      />
-    ))
+    <>
+      {Array.from({ length: apartments.length }, (_, j) => (
+        <Apartment
+          key={j}
+          index={j}
+          apartments={apartments}
+          floorHeight={floorHeight}
+          floorIndex={floorIndex}
+          {...rest}
+        />
+      ))}
+    </>
   )
 }
 
