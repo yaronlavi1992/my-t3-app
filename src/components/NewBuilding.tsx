@@ -11,7 +11,7 @@ const NewBuilding = observer(({ onChange }: any) => {
   const router = useRouter();
   const { buildingStore } = useStore();
   const { setIsEditingBuilding, setShowModal } = buildingStore;
-  const defaultApartments = [...Array.from({ length: 8 }, (_, i) => ({apartmentIndex: i, documentUrl: '', isSelected: false, type:''}))];
+  const defaultApartments = [...Array.from({ length: 8 }, (_, i) => ({ apartmentIndex: i, documentUrl: '', isSelected: false, type: '' }))];
   const [formValues, setFormValues]: any = useState({
     name: '',
     startFloor: 0,
@@ -37,22 +37,13 @@ const NewBuilding = observer(({ onChange }: any) => {
     setFormValues({
       ...formValues,
       [fieldName]: fieldValue,
-      ...(fieldName === 'apartmentsCount' ? {['apartments']: [...Array.from({ length: fieldValue }, (_, i) => ({apartmentIndex: i, documentUrl: '', isSelected: false, type:''}))]} : {})
+      ...(fieldName === 'apartmentsCount' ? { ['apartments']: [...Array.from({ length: fieldValue }, (_, i) => ({ apartmentIndex: i, documentUrl: '', isSelected: false, type: '' }))] } : {})
     });
 
   }
 
-  
-
-  // console.log({...value});
-  // const { register, handleSubmit, watch, formState: { errors } } = useForm();
-  // const onSubmit = (data: any) => {
-  //   console.log(data);
-  // };
-
 
   const handleSave = async () => {
-    // console.log({...value});
     const updatedValue = value.map((floorCluster: any, index: number) => index === editedIndex ? formValues : floorCluster);
 
     const normalizedValue: any[] = [];
@@ -67,15 +58,9 @@ const NewBuilding = observer(({ onChange }: any) => {
         normalizedValue.push(floorCluster);
       }
     });
-
-    // onChange(updatedValue);
-    // console.log(formValues);
-
-    // setValue(updatedValue);
     const newBuilding = await createBuilding.mutateAsync({
       name: formValues.name,
       sections: { ...normalizedValue },
-      // sections: { ...updatedValue },
     })
     setShowModal(false);
     router.push(`/${newBuilding.id}`)
@@ -87,9 +72,6 @@ const NewBuilding = observer(({ onChange }: any) => {
       newRow = { startFloor: +formValues.endFloor + 1, endFloor: +formValues.endFloor + 2, apartmentsCount: 8, apartments: defaultApartments, description: 'offices', name: formValues.name };
       const updatedValue = [...value, newRow];
       updatedValue[editedIndex] = formValues;
-      // console.log(updatedValue);
-
-
       setValue(updatedValue);
     } else {
       setValue([...value, newRow]);
@@ -98,9 +80,17 @@ const NewBuilding = observer(({ onChange }: any) => {
   }
 
   const handleDeleteRow = (rowIndex: number) => {
-    setValue(value.filter((row: any, index: number) => rowIndex !== index))
-    // onChange(value.filter((row: any, index: number) => rowIndex !== index));
+    const deletedRow = value.find((row: any, index: number) => rowIndex === index)
+    const removedFloorsRange = deletedRow.endFloor - deletedRow.startFloor + 1;
+    const updatedValue = value.filter((row: any, index: number) => rowIndex !== index);
+    for (let i = rowIndex; i < updatedValue.length; i++) {
+      const currentRow = updatedValue[i];
+      currentRow.startFloor -= removedFloorsRange;
+      currentRow.endFloor -= removedFloorsRange;
+    }
+    setValue(updatedValue);
   }
+
 
   return (
     <>
@@ -122,7 +112,7 @@ const NewBuilding = observer(({ onChange }: any) => {
                 Description
               </th>
               <th scope="col" className="px-6 py-3">
-                <span className="sr-only">Edit/save</span>
+                <span className="sr-only">Edit</span>
               </th>
               <th scope="col" className="px-6 py-3">
                 <span className="sr-only">Delete</span>
@@ -157,9 +147,7 @@ const NewBuilding = observer(({ onChange }: any) => {
                   <td className="px-6 py-4">
                     <input className="w-20 text-black" value={formValues['description']} onChange={(e) => { handleFieldChange('description', e.target.value) }} />
                   </td>
-                  <td className="px-6 py-4 text-right">
-                    <a href="#" onClick={handleSave} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Save</a>
-                  </td>
+                  <td className="px-6 py-4 text-right"></td>
                   <td className="px-6 py-4 text-right"></td>
                 </tr>
                 // </form>
@@ -200,6 +188,17 @@ const NewBuilding = observer(({ onChange }: any) => {
                   </div>
                 </button>
               </td>
+              <td></td>
+              {value.length > 0 ? <td>
+                <button onClick={handleSave} type="button" className="py-2.5 px-5 m-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                  <div className='flex justify-center items-center gap-1'>
+                    <svg className='w-4 h-4' fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z"></path>
+                    </svg>
+                    <div>Save</div>
+                  </div>
+                </button>
+              </td> : null}
             </tr>
           </tfoot>
         </table>

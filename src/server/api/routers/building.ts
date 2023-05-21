@@ -60,10 +60,19 @@ export const buildingRouter = createTRPCRouter({
   updateUserBuildingById: protectedProcedure.input(
     z.object({ buildingId: z.string(), name: z.string(), sections: z.any() })
   ).mutation(async ({ input, ctx }) => {
+    const { sections } = input;
+    const updatedSections = Object.values(sections).map((floor: any) => ({
+      ...floor,
+      apartments: floor.apartments.map((apartment: any) => {
+        const { isSelected, ...rest } = apartment;
+        return rest;
+      })
+    }))
     const { buildingId, ...data } = input;
+    
     const building = await ctx.prisma.building.update({
       where: { id: buildingId },
-      data: { ...data }
+      data: { ...data, sections: updatedSections }
     });
     return building;
   }),

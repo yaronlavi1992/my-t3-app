@@ -2,9 +2,11 @@ import { OrbitControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { observer } from 'mobx-react';
 import { NextPage } from 'next';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import * as THREE from 'three';
+import DocumentUpload, { BASE_SUPABASE_URL } from '~/components/DocumentUpload';
 import Ground from '~/components/Ground';
 import StaticModal from '~/components/StaticModal';
 import Table from '~/components/Table';
@@ -96,17 +98,33 @@ const Test2: NextPage = observer(() => {
       </StaticModal>
 
       <StaticModal position={'bottom-20 left-80'}>
-        {Object.keys?.(selectedApartments)?.map((floorIndex: string, index: number) => (
-          <div key={index} className='flex gap-2 p-2'>
-            <div className='flex items-center text-blue-300'>floor {floorIndex}</div>
-            <div className='text-white p-8 flex gap-2'>
-              apartments
-              {Object.keys(selectedApartments[floorIndex]).map((apartmentIndex: string, index: number) => (
-                <div key={index}>{`${apartmentIndex},`}</div>
-              ))}
+        {Object.keys?.(selectedApartments)?.map((floorIndex: string, index: number) => {
+          const { description: floorDescription } = floors[floorIndex];
+          return (
+            <div key={index} className='flex gap-2 p-2'>
+              <div className='flex items-center text-blue-300'>floor {floorIndex}</div>
+              <div className='text-white p-8 flex gap-2'>
+                {floorDescription}
+                {Object.keys(selectedApartments[floorIndex]).map((apartmentIndex: string, index: number) => {
+                  const { documentUrl } = floors[floorIndex].apartments[apartmentIndex];
+                  return (
+                    <div className='flex gap-1 items-center' key={index}>{apartmentIndex}{documentUrl !== '' ?
+                      <Link href={`${BASE_SUPABASE_URL}/${documentUrl}`} target={'_blank'}>
+                        <svg className='w-4 h-4' fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9zm3.75 11.625a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"></path>
+                        </svg>
+                      </Link>
+                      : <DocumentUpload buildingId={buildingSections.data?.id} buildingName={buildingSections.data?.name} >
+                        <svg className='w-4 h-4' fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m6.75 12l-3-3m0 0l-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"></path>
+                        </svg>
+                      </DocumentUpload>},</div>
+                  )
+                })}
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </StaticModal>
 
       {Object.keys(selectedApartments).length > 0 ? <StaticModal position={'bottom-6 left-80'}>
@@ -120,23 +138,6 @@ const Test2: NextPage = observer(() => {
 
 // const FloorCluster = ({ startFloor, endFloor, apartments, floorHeight, buildingRowIndex }: any) => {
 //   const floorsCount = endFloor - startFloor;
-
-//   return (
-//     <>
-//       {Array.from({ length: floorsCount }, (_, i) => (
-//         <>
-//           <Floor
-//             key={i}
-//             index={i}
-//             position={[0, i > 0 ? (i + startFloor - buildingRowIndex) * floorHeight : 0 + (startFloor - buildingRowIndex) * floorHeight, 0]}
-//             apartments={apartments}
-//             floorHeight={floorHeight}
-//           />
-//         </>
-//       ))}
-//     </>
-//   )
-// }
 
 const Floor = ({ apartments, index: floorIndex, floorHeight, ...rest }: any) => {
 
@@ -163,6 +164,16 @@ const Apartment = observer(({ apartments, index: apartmentIndex, floorHeight, fl
   const relevantApartment = floors[floorIndex].apartments[apartmentIndex];
 
   const segmentWidth = 2 * Math.PI / apartments.length;
+  // const cylinderArgs: any = [
+  //   5, // radiusTop
+  //   5, // radiusBottm
+  //   floorHeight, // height
+  //   1, // radialSegments
+  //   1, // heightSegments
+  //   false, // openEnded
+  //   segmentWidth * apartmentIndex, // thetaStart
+  //   segmentWidth // 2*Math.PI, // thetaLength
+  // ]
   const cylinderArgs: any = [5, 5, floorHeight, 1, 1, false, segmentWidth * apartmentIndex, segmentWidth]
   const geometry = new THREE.CylinderGeometry(...cylinderArgs);
   const edges = new THREE.EdgesGeometry(geometry);

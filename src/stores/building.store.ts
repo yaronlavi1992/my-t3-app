@@ -25,6 +25,20 @@ export class BuildingStore {
     this.showModal = show;
   }
 
+  // setSelectedApartmentsDocumentUrl = (documentUrl: string) => {
+  //   const updatedFloors = this.floors.map((floor: any) => ({
+  //     ...floor,
+  //     apartments: floor.apartments.map((apartment: any) => {
+  //       console.log(apartment.documentUrl);
+  //       console.log(documentUrl);
+  //       return ({
+  //       ...apartment,
+  //       documentUrl: documentUrl
+  //     })})
+  //   }));
+  //   this.setFloors(updatedFloors);
+  // }
+
   clearSelection = () => {
     const updatedFloors = this.floors.map((floor: any) => ({
       ...floor,
